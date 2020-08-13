@@ -24,17 +24,18 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.vfs.VirtualFile;
+
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
 import data.Log;
 import data.StorageDataKey;
 import data.task.GetTranslationTask;
 import language_engine.TranslationEngineType;
 import module.AndroidString;
 import module.SupportedLanguages;
-import org.jetbrains.annotations.Nullable;
 import ui.MultiSelectDialog;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by Wesley Lin on 11/26/14.
@@ -63,6 +64,8 @@ public class ConvertToOtherLanguages extends AnAction implements MultiSelectDial
         final VirtualFile file = CommonDataKeys.VIRTUAL_FILE.getData(e.getDataContext());
 
         boolean isStringXML = isStringXML(file);
+        Log.i("isStringXML: " + file.getName() + " " + isStringXML);
+
         e.getPresentation().setEnabled(isStringXML);
         e.getPresentation().setVisible(isStringXML);
     }
@@ -85,13 +88,14 @@ public class ConvertToOtherLanguages extends AnAction implements MultiSelectDial
         }
 
         try {
-            androidStringsInStringFile = AndroidString.getAndroidStringsList(clickedFile.contentsToByteArray());
-        } catch (IOException e1) {
+            androidStringsInStringFile = AndroidString.getAndroidStringsList(project, clickedFile.getInputStream());
+        } catch (Exception e1) {
             e1.printStackTrace();
+            showErrorDialog(project, "Target file parse error: " + e1.toString());
+            return;
         }
 
-
-        if (androidStringsInStringFile == null || androidStringsInStringFile.isEmpty()) {
+        if (androidStringsInStringFile.isEmpty()) {
             showErrorDialog(project, "Target file does not contain any strings.");
             return;
         }
@@ -121,8 +125,10 @@ public class ConvertToOtherLanguages extends AnAction implements MultiSelectDial
                     String.valueOf(selectedLanguages.contains(language)));
         }
 
-        new GetTranslationTask(project, "Translation in progress, using " + defaultTranslationEngine.getDisplayName(),
-                selectedLanguages, androidStringsInStringFile, defaultTranslationEngine, overrideChecked, clickedFile)
+        new GetTranslationTask
+                (project, "Translation in progress, using " + defaultTranslationEngine.getDisplayName(),
+                        selectedLanguages, androidStringsInStringFile, defaultTranslationEngine,
+                        overrideChecked, clickedFile)
                 .setCancelText("Translation has been canceled").queue();
     }
 
@@ -141,12 +147,14 @@ public class ConvertToOtherLanguages extends AnAction implements MultiSelectDial
         //if (!file.getName().equals("strings.xml"))
         //    return false;
 
-        if (file.getParent() == null)
+        if (file.getParent() == null) {
             return false;
+        }
 
         // only show popup menu for English strings
-        if (!file.getParent().getName().equals("values") && !file.getParent().getName().startsWith("values-en"))
+        if (!file.getParent().getName().equals("values") && !file.getParent().getName().startsWith("values-en")) {
             return false;
+        }
 
         return true;
     }

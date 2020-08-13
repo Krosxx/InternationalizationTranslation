@@ -30,7 +30,7 @@ public class XmlCode {
         char[] cs = s.toCharArray();
         int i;
         for (i = cs.length - 1; i >= 0; i--) {
-            if (cs[i] != ' ') break;
+            if (cs[i] != ' ' && cs[i] != 160) break;
         }
         return cs.length - i - 1;
     }

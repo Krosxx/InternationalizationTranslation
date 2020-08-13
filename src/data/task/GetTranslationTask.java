@@ -33,10 +33,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import Utils.XmlCode;
 import action.ConvertToOtherLanguages;
 import data.Log;
 import data.SerializeUtil;
@@ -44,6 +44,7 @@ import data.StorageDataKey;
 import language_engine.TranslationEngineType;
 import language_engine.baidu.TransApi;
 import module.AndroidString;
+import module.ArrayString;
 import module.FilterRule;
 import module.SupportedLanguages;
 
@@ -106,7 +107,6 @@ public class GetTranslationTask extends Task.Backgroundable {
         }
 
         try {
-
             for (int i = 0; i < selectedLanguages.size(); i++) {
                 SupportedLanguages language = selectedLanguages.get(i);
 
@@ -163,13 +163,15 @@ public class GetTranslationTask extends Task.Backgroundable {
                     }
 
                     String fileName = getValueResourcePath(language);
+
                     List<AndroidString> fileContent = getTargetAndroidStrings(androidStrings, translationResult, fileName, override);
 
                     writeAndroidStringToLocal(myProject, fileName, fileContent);
                 }
             }
         } catch (Exception e) {
-            errorMsg = e.getMessage();
+            e.printStackTrace();
+            errorMsg = e.toString();
         }
     }
 
@@ -199,8 +201,8 @@ public class GetTranslationTask extends Task.Backgroundable {
             @NotNull SupportedLanguages sourceLanguageCode,
             TranslationEngineType translationEngineType) {
 
-        List<String> querys = AndroidString.getAndroidStringValues(needToTranslatedString);
-        Log.i("query: " + querys.toString());
+        //List<String> querys = AndroidString.getAndroidStringValues(needToTranslatedString);
+        //Log.i("query: " + querys.toString());
 
         List<String> result = null;
 
@@ -217,7 +219,7 @@ public class GetTranslationTask extends Task.Backgroundable {
 //                break;
             case Baidu:
                 String text = AndroidString.getStringValues(needToTranslatedString);
-                Log.i(text);
+                Log.i("query: " + text);
                 PropertiesComponent pc = PropertiesComponent.getInstance();
                 TransApi transApi = new TransApi(
                         pc.getValue(StorageDataKey.BaiduClientIdStored),
@@ -234,12 +236,19 @@ public class GetTranslationTask extends Task.Backgroundable {
 
         Log.i("needToTranslatedString.size(): " + needToTranslatedString.size(),
                 "result.size(): " + result.size());
+
         AndroidString tar;
         for (int i = 0; i < needToTranslatedString.size(); i++) {
             tar = needToTranslatedString.get(i);
-            AndroidString ts = new AndroidString(tar.getKey(), result.get(i));
-            ts.encodeXmlValue(XmlCode.getTailSpaceCount(tar.getValue()));
-            translatedAndroidStrings.add(ts);
+            if (tar instanceof ArrayString) {
+                ArrayString as = new ArrayString(tar.getKey(), result);
+                as.encodeXmlValue(tar);
+                translatedAndroidStrings.add(as);
+            } else {
+                AndroidString ts = new AndroidString(tar.getKey(), result.get(i));
+                ts.encodeXmlValue(tar);
+                translatedAndroidStrings.add(ts);
+            }
         }
         return translatedAndroidStrings;
     }
@@ -257,19 +266,29 @@ public class GetTranslationTask extends Task.Backgroundable {
             //    splitFragment = 50;
             //    break;
         }
-
-        if (origin != null && origin.size() > 0) {
-            if (origin.size() <= splitFragment) {
-                splited.add(origin);
+        int i;
+        for (i = origin.size() - 1; i >= 0; i--) {
+            if (origin.get(i) instanceof ArrayString) {
+                splited.add(Collections.singletonList(origin.get(i)));
             } else {
-                int count = (origin.size() % splitFragment == 0) ? (origin.size() / splitFragment) : (origin.size() / splitFragment + 1);
-                for (int i = 1; i <= count; i++) {
+                break;
+            }
+        }
+        if (i < 0) i = 0;
+        List<AndroidString> strNodes = origin.subList(0, i + 1);
+
+        if (strNodes.size() > 0) {
+            if (strNodes.size() <= splitFragment) {
+                splited.add(strNodes);
+            } else {
+                int count = (strNodes.size() % splitFragment == 0) ? (strNodes.size() / splitFragment) : (strNodes.size() / splitFragment + 1);
+                for (i = 1; i <= count; i++) {
                     int end = i * splitFragment;
-                    if (end > origin.size()) {
-                        end = origin.size();
+                    if (end > strNodes.size()) {
+                        end = strNodes.size();
                     }
 
-                    splited.add(origin.subList((i - 1) * splitFragment, end));
+                    splited.add(strNodes.subList((i - 1) * splitFragment, end));
                 }
             }
         }
@@ -282,18 +301,6 @@ public class GetTranslationTask extends Task.Backgroundable {
                                                     boolean override) {
         List<AndroidString> result = new ArrayList<AndroidString>();
 
-
-        VirtualFile targetStringFile = LocalFileSystem.getInstance().findFileByPath(
-                getValueResourcePath(language));
-        List<AndroidString> targetAndroidStrings = new ArrayList<AndroidString>();
-        if (targetStringFile != null) {
-            try {
-                targetAndroidStrings = AndroidString.getAndroidStringsList(targetStringFile.contentsToByteArray());
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        }
-
         String rulesString = PropertiesComponent.getInstance().getValue(StorageDataKey.SettingFilterRules);
         List<FilterRule> filterRules = new ArrayList<FilterRule>();
         if (rulesString == null) {
@@ -304,8 +311,10 @@ public class GetTranslationTask extends Task.Backgroundable {
 //        Log.i("targetAndroidString: " + targetAndroidStrings.toString());
         for (AndroidString androidString : origin) {
             // filter rules
-            if (FilterRule.inFilterRule(androidString.getKey(), filterRules))
+            if (FilterRule.inFilterRule(androidString.getKey(), filterRules)) {
+                Log.i("Filter: " + androidString.getKey());
                 continue;
+            }
 
             // override
             /*if (!override && !targetAndroidStrings.isEmpty()) {
@@ -322,10 +331,11 @@ public class GetTranslationTask extends Task.Backgroundable {
         return result;
     }
 
-    private static List<AndroidString> getTargetAndroidStrings(List<AndroidString> sourceAndroidStrings,
-                                                               List<AndroidString> translatedAndroidStrings,
-                                                               String fileName,
-                                                               boolean override) {
+    private List<AndroidString> getTargetAndroidStrings(
+            List<AndroidString> sourceAndroidStrings,
+            List<AndroidString> translatedAndroidStrings,
+            String fileName,
+            boolean override) {
 
         if (translatedAndroidStrings == null) {
             translatedAndroidStrings = new ArrayList<AndroidString>();
@@ -335,8 +345,9 @@ public class GetTranslationTask extends Task.Backgroundable {
         List<AndroidString> existenceAndroidStrings = null;
         if (existenceFile != null && !override) {
             try {
-                existenceAndroidStrings = AndroidString.getAndroidStringsList(existenceFile.contentsToByteArray());
-            } catch (IOException e) {
+                existenceAndroidStrings = AndroidString.getAndroidStringsList(myProject, existenceFile.getInputStream());
+            } catch (Exception e) {
+                existenceAndroidStrings = new ArrayList<AndroidString>();
                 e.printStackTrace();
             }
         } else {
@@ -349,21 +360,38 @@ public class GetTranslationTask extends Task.Backgroundable {
 
         List<AndroidString> targetAndroidStrings = new ArrayList<AndroidString>();
 
-        for (int i = 0; i < sourceAndroidStrings.size(); i++) {
-            AndroidString string = sourceAndroidStrings.get(i);
-            AndroidString resultString = new AndroidString(string);
-
-            // if override is checked, skip setting the existence value, for performance issue
-            if (!override) {
-                String existenceValue = getAndroidStringValueInList(existenceAndroidStrings, resultString.getKey());
-                if (existenceValue != null) {
-                    resultString.setValue(existenceValue);
+        for (AndroidString string : sourceAndroidStrings) {
+            AndroidString resultString;
+            if (string instanceof ArrayString) {
+                resultString = new ArrayString((ArrayString) string);
+                if (!override) {
+                    ArrayString existenceValue = (ArrayString) getAndroidStringValueInList(existenceAndroidStrings, resultString.getKey());
+                    if (existenceValue != null) {
+                        ((ArrayString) resultString).setItems(existenceValue.getItems());
+                    }
                 }
-            }
 
-            String translatedValue = getAndroidStringValueInList(translatedAndroidStrings, resultString.getKey());
-            if (translatedValue != null) {
-                resultString.setValue(translatedValue);
+                ArrayString translatedValue = (ArrayString) getAndroidStringValueInList(translatedAndroidStrings, resultString.getKey());
+                if (translatedValue != null) {
+                    ((ArrayString) resultString).setItems(translatedValue.getItems());
+                }
+
+            } else {
+
+                resultString = new AndroidString(string);
+
+                // if override is checked, skip setting the existence value, for performance issue
+                if (!override) {
+                    AndroidString existenceValue = getAndroidStringValueInList(existenceAndroidStrings, resultString.getKey());
+                    if (existenceValue != null) {
+                        resultString.setValue(existenceValue.getValue());
+                    }
+                }
+
+                AndroidString translatedValue = getAndroidStringValueInList(translatedAndroidStrings, resultString.getKey());
+                if (translatedValue != null) {
+                    resultString.setValue(translatedValue.getValue());
+                }
             }
 
             targetAndroidStrings.add(resultString);
@@ -372,7 +400,11 @@ public class GetTranslationTask extends Task.Backgroundable {
         return targetAndroidStrings;
     }
 
-    private static void writeAndroidStringToLocal(final Project myProject, String filePath, List<AndroidString> fileContent) {
+    private static void writeAndroidStringToLocal(
+            final Project myProject,
+            String filePath,
+            List<AndroidString> fileContent
+    ) {
         File file = new File(filePath);
         final VirtualFile virtualFile;
         boolean fileExits = true;
@@ -446,10 +478,10 @@ public class GetTranslationTask extends Task.Backgroundable {
         return keys.contains(key);
     }
 
-    public static String getAndroidStringValueInList(List<AndroidString> androidStrings, String key) {
+    public static AndroidString getAndroidStringValueInList(List<AndroidString> androidStrings, String key) {
         for (AndroidString androidString : androidStrings) {
             if (androidString.getKey().equals(key)) {
-                return androidString.getValue();
+                return androidString;
             }
         }
         return null;

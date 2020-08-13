@@ -3,8 +3,97 @@
 
 - 优化 (' & 空格)等特殊字符
 - 支持自定义 百度翻译 appid
+- 支持 string-array
 
 下载：[InternationalizationTranslation.zip](InternationalizationTranslation.zip)
+
+**某些格式化字符需要检查修改**
+
+#### 原文件
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="listen_one">接听率: %.2f</string>
+    <string name="last_login_time">最后登录:&#160;</string>
+    <string name="can_use_gold">可用金币: %d</string>
+    <string name="test1">¥ 123 \'&#160;</string>
+    <string-array name="weeks">
+        <item>周一</item>
+        <item>周二</item>
+        <item>周三</item>
+        <item>周四</item>
+        <item>周五</item>
+        <item>周六</item>
+        <item>周日</item>
+    </string-array>
+</resources>
+```
+
+#### 一键翻译
+
+- English
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="listen_one">Response rate:%. 2F</string>
+	<string name="last_login_time">Last login:&nbsp;</string>
+	<string name="can_use_gold">Available gold coins% d</string>
+	<string name="test1">¥ 123 \' &nbsp;</string>
+	<string-array name="weeks">
+		<item>Monday</item>
+		<item>Tuesday</item>
+		<item>Wednesday</item>
+		<item>Thursday</item>
+		<item>Friday</item>
+		<item>Saturday</item>
+		<item>Sunday</item>
+	</string-array>
+</resources>
+```
+
+- 繁体
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="listen_one">接聽率：%.2f</string>
+	<string name="last_login_time">最後登錄： &nbsp;</string>
+	<string name="can_use_gold">可用金幣：%d</string>
+	<string name="test1">¥123 \' &nbsp;</string>
+	<string-array name="weeks">
+		<item>週一</item>
+		<item>週二</item>
+		<item>週三</item>
+		<item>週四</item>
+		<item>週五</item>
+		<item>週六</item>
+		<item>周日</item>
+	</string-array>
+</resources>
+```
+
+- 日文
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="listen_one">受信率:%2 f</string>
+	<string name="last_login_time">最終ログイン:&nbsp;</string>
+	<string name="can_use_gold">使用可能な金貨:%d</string>
+	<string name="test1">¥123&nbsp;</string>
+	<string-array name="weeks">
+		<item>月曜日</item>
+		<item>火曜日</item>
+		<item>水曜日</item>
+		<item>木曜日</item>
+		<item>金曜日</item>
+		<item>土曜日</item>
+		<item>日曜日</item>
+	</string-array>
+</resources>
+
+```
+
+
 
 
 > ﻿BaiduTranslationInternationalization

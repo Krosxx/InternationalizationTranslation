@@ -16,21 +16,24 @@
 
 package module;
 
+import com.intellij.openapi.project.Project;
+
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.EndElement;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
+import java.util.function.Consumer;
 
 import Utils.XmlCode;
+import data.Log;
 
 /**
  * Created by Wesley Lin on 11/29/14.
@@ -44,8 +47,9 @@ public class AndroidString {
         this.value = value;
     }
 
-    public void encodeXmlValue(int spCount) {
+    public void encodeXmlValue(AndroidString srcStr) {
         if (value != null) {
+            int spCount = XmlCode.getTailSpaceCount(srcStr.getValue());
             value = XmlCode.encode(value, spCount);
         }
     }
@@ -89,102 +93,72 @@ public class AndroidString {
                 "</string>";
     }
 
-    private static final String KEY_STRING = "</string>";
-    private static final String SPLIT_KEY = "<string";
-    private static final String KEY_START = "name=\"";
-    private static final String KEY_END = "\">";
-    private static final String VALUE_END = "</string>";
+    private static String SHEADER = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
+    private static String RHEADER = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">";
 
-    /**
-     * @deprecated
-     */
-    public static List<AndroidString> getAndroidStringsList(InputStream xml) {
-        List<AndroidString> result = new ArrayList<AndroidString>();
+    public static List<AndroidString> getAndroidStringsList(Project project, InputStream xml) throws Exception {
+        File tmpFile = null;
+        if (project != null) {
+            tmpFile = new File(project.getBasePath() + "/.idea/trans_tmp.xml");
+            tmpFile.createNewFile();
+            FileOutputStream fo = new FileOutputStream(tmpFile);
 
-        try {
-            XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-            XMLEventReader eventReader = inputFactory.createXMLEventReader(xml);
-
-            AndroidString androidString = null;
-
-            while (eventReader.hasNext()) {
-                XMLEvent event = eventReader.nextEvent();
-
-                if (event.isStartElement()) {
-                    StartElement startElement = event.asStartElement();
-                    if (startElement.getName().getLocalPart().equals("string")) {
-                        androidString = new AndroidString();
-
-                        Iterator<Attribute> attributes = startElement.getAttributes();
-
-                        while (attributes.hasNext()) {
-                            Attribute attribute = attributes.next();
-                            if (attribute.getName().toString().equals("name")) {
-                                androidString.setKey(attribute.getValue());
-                            }
-                        }
-
-                        event = eventReader.nextEvent();
-                        String value = event.asCharacters().getData().trim();
-
-                        // todo: if the value starts with xml tags(<u>), the value will be empty
-                        androidString.setValue(value);
-                        continue;
-                    }
-                }
-
-                if (event.isEndElement()) {
-                    EndElement endElement = event.asEndElement();
-                    if (endElement.getName().getLocalPart().equals("string")) {
-                        result.add(androidString);
-                    }
-                }
+            byte[] bs = new byte[1024];
+            int b;
+            ByteArrayOutputStream bo = new ByteArrayOutputStream();
+            while ((b = xml.read(bs)) > 0) {
+                bo.write(bs, 0, b);
             }
-        } catch (XMLStreamException e) {
-            e.printStackTrace();
+            String xs = bo.toString("UTF-8");
+            String text;
+            if (xs.startsWith(SHEADER)) {
+                text = xs.replace(SHEADER, RHEADER);
+            } else {
+                text = RHEADER + xs;
+            }
+            fo.write(text.getBytes(StandardCharsets.UTF_8));
+            fo.close();
+            xml.close();
+            xml = new FileInputStream(tmpFile);
+        }
+
+        List<AndroidString> result = new ArrayList<AndroidString>();
+        List<ArrayString> arrayStrings = new ArrayList<ArrayString>();
+
+        SAXReader reader = new SAXReader();
+        org.dom4j.Document doc = reader.read(xml);
+        Element resNode = doc.getRootElement();
+
+        for (Iterator<Element> it = resNode.elementIterator(); it.hasNext(); ) {
+            Element element = it.next();
+            String tag = element.getName();
+            if (tag.equals("string")) {
+                AndroidString as = new AndroidString(
+                        element.attributeValue("name", ""),
+                        element.getStringValue()
+                );
+                result.add(as);
+                //自动翻译
+                //as.decodeXmlValue();
+            } else if (tag.equals("string-array")) {
+                List<String> items = new ArrayList<>();
+                ArrayString ass = new ArrayString(element.attributeValue("name", ""), items);
+                arrayStrings.add(ass);
+                element.elementIterator().forEachRemaining(new Consumer<Element>() {
+                    @Override
+                    public void accept(Element element) {
+                        items.add(element.getStringValue());
+                    }
+                });
+                //自动翻译
+                //ass.decodeXmlValue();
+            }
+        }
+        result.addAll(arrayStrings);
+        if (tmpFile != null) {
+            tmpFile.delete();
         }
         return result;
-    }
-
-    public static List<AndroidString> getAndroidStringsList(byte[] xmlContentByte) {
-        try {
-            String fileContent = new String(xmlContentByte, "UTF-8");
-
-            if (!fileContent.contains(KEY_STRING))
-                return null;
-
-            String[] tokens = fileContent.split(SPLIT_KEY);
-
-            List<AndroidString> result = new ArrayList<AndroidString>();
-
-            for (int i = 0; i < tokens.length; i++) {
-
-                if (tokens[i].contains(KEY_STRING)) {
-
-                    int keyStartIndex = tokens[i].indexOf(KEY_START) + KEY_START.length();
-                    int keyEndIndex = tokens[i].indexOf(KEY_END);
-                    int valueEndIndex = tokens[i].indexOf(VALUE_END);
-
-                    if (keyStartIndex >= tokens[i].length()
-                            || keyEndIndex >= tokens[i].length()
-                            || (keyEndIndex + KEY_END.length()) >= tokens[i].length()
-                            || valueEndIndex >= tokens[i].length()) {
-                        continue;
-                    }
-
-                    String key = tokens[i].substring(keyStartIndex, keyEndIndex).trim();
-                    String value = tokens[i].substring(keyEndIndex + KEY_END.length(), valueEndIndex).trim();
-
-                    AndroidString newS = new AndroidString(key, value);
-                    newS.decodeXmlValue();
-                    result.add(newS);
-                }
-            }
-            return result;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     public static List<String> getAndroidStringKeys(List<AndroidString> list) {
@@ -200,7 +174,7 @@ public class AndroidString {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < list.size(); i++) {
             String value = list.get(i).getValue();
-            value = value.replaceAll("\n", "");
+            //value = value.replaceAll("\n", "");
             stringBuilder.append(value);
             if (i != list.size() - 1) {
                 stringBuilder.append("\n");
