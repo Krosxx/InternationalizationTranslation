@@ -16,7 +16,6 @@
 
 package data.task;
 
-import action.ConvertToOtherLanguages;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
@@ -25,14 +24,7 @@ import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import data.Log;
-import data.SerializeUtil;
-import data.StorageDataKey;
-import language_engine.TranslationEngineType;
-import language_engine.baidu.TransApi;
-import module.AndroidString;
-import module.FilterRule;
-import module.SupportedLanguages;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,7 +33,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import Utils.XmlCode;
+import action.ConvertToOtherLanguages;
+import data.Log;
+import data.SerializeUtil;
+import data.StorageDataKey;
+import language_engine.TranslationEngineType;
+import language_engine.baidu.TransApi;
+import module.AndroidString;
+import module.FilterRule;
+import module.SupportedLanguages;
 
 /**
  * Created by Wesley Lin on 12/1/14.
@@ -81,48 +85,91 @@ public class GetTranslationTask extends Task.Backgroundable {
         this.clickedFile = clickedFile;
     }
 
+    private boolean preCheck() {
+        if (translationEngineType == TranslationEngineType.Baidu) {
+            PropertiesComponent pc = PropertiesComponent.getInstance();
+            String id = pc.getValue(StorageDataKey.BaiduClientIdStored);
+            String sec = pc.getValue(StorageDataKey.BaiduClientSecretStored);
+            if (id == null || id.isEmpty() || sec == null || sec.isEmpty()) {
+                errorMsg = "请在插件设置中配置Baidu翻译 appId & secret";
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public void run(ProgressIndicator indicator) {
-        for (int i = 0; i < selectedLanguages.size(); i++) {
+        errorMsg = null;
+        if (!preCheck()) {
+            return;
+        }
 
-            SupportedLanguages language = selectedLanguages.get(i);
+        try {
 
-            if (language != null && !"".equals(language)) {
+            for (int i = 0; i < selectedLanguages.size(); i++) {
+                SupportedLanguages language = selectedLanguages.get(i);
 
-                List<AndroidString> androidStringList = filterAndroidString(androidStrings, language, override);
+                if (language != null) {
 
-                List<List<AndroidString>> filteredAndSplittedString
-                        = splitAndroidString(androidStringList, translationEngineType);
+                    List<AndroidString> androidStringList = filterAndroidString(androidStrings, language, override);
 
-                List<AndroidString> translationResult = new ArrayList<AndroidString>();
-                for (int j = 0; j < filteredAndSplittedString.size(); j++) {
+                    List<List<AndroidString>> filteredAndSplittedString
+                            = splitAndroidString(androidStringList, translationEngineType);
 
-                    List<AndroidString> strings = getTranslationEngineResult(
-                            filteredAndSplittedString.get(j),
-                            language,
-                            SupportedLanguages.English,
-                            translationEngineType
-                    );
+                    HashMap<Integer, Integer> errNum = new HashMap<>();
 
-                    if (strings == null) {
-                        Log.i("language===" + language);
-                        continue;
+                    List<AndroidString> translationResult = new ArrayList<AndroidString>();
+                    for (int j = 0; j < filteredAndSplittedString.size(); j++) {
+
+                        List<AndroidString> strings = getTranslationEngineResult(
+                                filteredAndSplittedString.get(j),
+                                language,
+                                SupportedLanguages.English,
+                                translationEngineType
+                        );
+
+                        if (strings == null) {
+                            Log.i("language===" + language);
+                            int jerr = errNum.getOrDefault(j, 0);
+                            if (jerr < 5) {
+                                errNum.put(j, jerr + 1);
+                                j--;
+                            } else {
+                                if (errorMsg == null) {
+                                    errorMsg = "翻译失败：重试次数过多 " + language + "\n";
+                                } else {
+                                    errorMsg += "翻译失败：重试次数过多 " + language + "\n";
+                                }
+                                Log.i("翻译失败：重试次数过多" + language);
+                                break;
+                            }
+                            try {
+                                // 请求受限
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            continue;
+                        }
+
+                        translationResult.addAll(strings);
+
+                        indicator.setFraction(indicatorFractionFrame * (double) (i)
+                                + indicatorFractionFrame / filteredAndSplittedString.size() * (double) (j));
+                        indicator.setText("Translating to " + language.getLanguageEnglishDisplayName()
+                                + " (" + language.getLanguageDisplayName() + ")");
+
                     }
 
-                    translationResult.addAll(strings);
+                    String fileName = getValueResourcePath(language);
+                    List<AndroidString> fileContent = getTargetAndroidStrings(androidStrings, translationResult, fileName, override);
 
-                    indicator.setFraction(indicatorFractionFrame * (double) (i)
-                            + indicatorFractionFrame / filteredAndSplittedString.size() * (double) (j));
-                    indicator.setText("Translating to " + language.getLanguageEnglishDisplayName()
-                            + " (" + language.getLanguageDisplayName() + ")");
-
+                    writeAndroidStringToLocal(myProject, fileName, fileContent);
                 }
-
-                String fileName = getValueResourcePath(language);
-                List<AndroidString> fileContent = getTargetAndroidStrings(androidStrings, translationResult, fileName, override);
-
-                writeAndroidStringToLocal(myProject, fileName, fileContent);
             }
+        } catch (Exception e) {
+            errorMsg = e.getMessage();
         }
     }
 
@@ -130,9 +177,11 @@ public class GetTranslationTask extends Task.Backgroundable {
     @Override
     public void onSuccess() {
 
-        if (errorMsg == null || errorMsg.isEmpty())
-            return;
-        ConvertToOtherLanguages.showSuccessDialog(getProject(), "translation Success");
+        if (errorMsg == null)
+            ConvertToOtherLanguages.showSuccessDialog(getProject(), "translation Success");
+        else {
+            ConvertToOtherLanguages.showErrorDialog(getProject(), "translation failed: " + errorMsg);
+        }
     }
 
     private String getValueResourcePath(SupportedLanguages language) {
@@ -144,18 +193,19 @@ public class GetTranslationTask extends Task.Backgroundable {
     }
 
     // todo: if got error message, should break the background task
-    private List<AndroidString> getTranslationEngineResult(@NotNull List<AndroidString> needToTranslatedString,
-                                                           @NotNull SupportedLanguages targetLanguageCode,
-                                                           @NotNull SupportedLanguages sourceLanguageCode,
-                                                           TranslationEngineType translationEngineType) {
+    private List<AndroidString> getTranslationEngineResult(
+            @NotNull List<AndroidString> needToTranslatedString,
+            @NotNull SupportedLanguages targetLanguageCode,
+            @NotNull SupportedLanguages sourceLanguageCode,
+            TranslationEngineType translationEngineType) {
 
         List<String> querys = AndroidString.getAndroidStringValues(needToTranslatedString);
-        Log.i(querys.toString());
+        Log.i("query: " + querys.toString());
 
         List<String> result = null;
 
         switch (translationEngineType) {
-            case Google:
+            //case Google:
 //                result = GoogleTranslationApi.getTranslationJSON(querys, targetLanguageCode, sourceLanguageCode);
 //                if (result == null) {
 //                    errorMsg = GoogleErrorUnknown;
@@ -167,18 +217,29 @@ public class GetTranslationTask extends Task.Backgroundable {
 //                break;
             case Baidu:
                 String text = AndroidString.getStringValues(needToTranslatedString);
-                TransApi transApi = new TransApi();
+                Log.i(text);
+                PropertiesComponent pc = PropertiesComponent.getInstance();
+                TransApi transApi = new TransApi(
+                        pc.getValue(StorageDataKey.BaiduClientIdStored),
+                        pc.getValue(StorageDataKey.BaiduClientSecretStored)
+                );
                 result = transApi.getTransResult(text, "Auto", targetLanguageCode.getLanguageCode());
                 break;
+        }
+        if (result == null) {
+            return null;
         }
 
         List<AndroidString> translatedAndroidStrings = new ArrayList<AndroidString>();
 
         Log.i("needToTranslatedString.size(): " + needToTranslatedString.size(),
                 "result.size(): " + result.size());
+        AndroidString tar;
         for (int i = 0; i < needToTranslatedString.size(); i++) {
-            translatedAndroidStrings.add(new AndroidString(
-                    needToTranslatedString.get(i).getKey(), result.get(i)));
+            tar = needToTranslatedString.get(i);
+            AndroidString ts = new AndroidString(tar.getKey(), result.get(i));
+            ts.encodeXmlValue(XmlCode.getTailSpaceCount(tar.getValue()));
+            translatedAndroidStrings.add(ts);
         }
         return translatedAndroidStrings;
     }
@@ -192,9 +253,9 @@ public class GetTranslationTask extends Task.Backgroundable {
             /*case Bing:
                 splitFragment = 50;
                 break;*/
-            case Google:
-                splitFragment = 50;
-                break;
+            //case Google:
+            //    splitFragment = 50;
+            //    break;
         }
 
         if (origin != null && origin.size() > 0) {
@@ -321,7 +382,7 @@ public class GetTranslationTask extends Task.Backgroundable {
                 fileExits = false;
                 file.createNewFile();
             }
-            //Change by GodLikeThomas FIX: Appeared Messy code under windows --start; 
+            //Change by GodLikeThomas FIX: Appeared Messy code under windows --start;
             //FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
             //BufferedWriter writer = new BufferedWriter(fileWriter);
             //writer.write(getFileContent(fileContent));

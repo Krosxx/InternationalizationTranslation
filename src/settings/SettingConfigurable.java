@@ -22,20 +22,20 @@ import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBScrollPane;
-import data.Log;
-import data.SerializeUtil;
-import data.StorageDataKey;
-import language_engine.TranslationEngineType;
-import module.FilterRule;
+
 import org.jdesktop.swingx.VerticalLayout;
 import org.jdesktop.swingx.prompt.PromptSupport;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
-import ui.AddFilterRuleDialog;
-import ui.GoogleAlertDialog;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -44,6 +44,23 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
+import data.Log;
+import data.SerializeUtil;
+import data.StorageDataKey;
+import language_engine.TranslationEngineType;
+import module.FilterRule;
+import ui.AddFilterRuleDialog;
 
 /**
  * Created by Wesley Lin on 12/8/14.
@@ -150,8 +167,12 @@ public class SettingConfigurable implements Configurable, ActionListener {
         if (filterRulesChanged)
             return true;
 
-        PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
+        PropertiesComponent pc = PropertiesComponent.getInstance();
         switch (currentEngine) {
+            case Baidu: {
+                return !line1Text.getText().equals(pc.getValue(StorageDataKey.BaiduClientIdStored))
+                        || !line2Text.getText().equals(pc.getValue(StorageDataKey.BaiduClientSecretStored));
+            }
             /*case Bing: {
                 String bingClientIdStored = propertiesComponent.getValue(StorageDataKey.BingClientIdStored);
                 String bingClientSecretStored = propertiesComponent.getValue(StorageDataKey.BingClientSecretStored);
@@ -179,20 +200,20 @@ public class SettingConfigurable implements Configurable, ActionListener {
 
                 return bingClientIdChanged || bingClientSecretChanged;
             }*/
-            case Google: {
-                String googleApiKeyStored = propertiesComponent.getValue(StorageDataKey.GoogleApiKeyStored);
-                boolean googleApiKeyStoredChanged = false;
-
-                if (googleApiKeyStored == null) {
-                    if (!line1TextField.getText().isEmpty())
-                        googleApiKeyStoredChanged = true;
-                } else {
-                    if (!line1TextField.getText().equals(googleApiKeyStored)
-                            && !line1TextField.getText().trim().isEmpty())
-                        googleApiKeyStoredChanged = true;
-                }
-                return googleApiKeyStoredChanged;
-            }
+            //case Google: {
+            //    String googleApiKeyStored = propertiesComponent.getValue(StorageDataKey.GoogleApiKeyStored);
+            //    boolean googleApiKeyStoredChanged = false;
+            //
+            //    if (googleApiKeyStored == null) {
+            //        if (!line1TextField.getText().isEmpty())
+            //            googleApiKeyStoredChanged = true;
+            //    } else {
+            //        if (!line1TextField.getText().equals(googleApiKeyStored)
+            //                && !line1TextField.getText().trim().isEmpty())
+            //            googleApiKeyStoredChanged = true;
+            //    }
+            //    return googleApiKeyStoredChanged;
+            //}
         }
         return false;
     }
@@ -225,12 +246,20 @@ public class SettingConfigurable implements Configurable, ActionListener {
                 line2TextField.setText("");
             }
             break;*/
-            case Google: {
-                if (!line1TextField.getText().trim().isEmpty()) {
-                    propertiesComponent.setValue(StorageDataKey.GoogleApiKeyStored, line1TextField.getText());
-                    PromptSupport.setPrompt(line1TextField.getText(), line1TextField);
-                }
-                line1TextField.setText("");
+            //case Google: {
+            //    if (!line1TextField.getText().trim().isEmpty()) {
+            //        propertiesComponent.setValue(StorageDataKey.GoogleApiKeyStored, line1TextField.getText());
+            //        PromptSupport.setPrompt(line1TextField.getText(), line1TextField);
+            //    }
+            //    line1TextField.setText("");
+            //}
+            //break;
+            case Baidu: {
+                propertiesComponent.setValue(StorageDataKey.BaiduClientIdStored, line1TextField.getText());
+                PromptSupport.setPrompt(line1TextField.getText(), line1TextField);
+
+                propertiesComponent.setValue(StorageDataKey.BaiduClientSecretStored, line2TextField.getText());
+                PromptSupport.setPrompt(line2TextField.getText(), line2TextField);
             }
             break;
         }
@@ -283,17 +312,22 @@ public class SettingConfigurable implements Configurable, ActionListener {
 
         // default: false, if user set 'never show', set true
         boolean GoogleAlertMsgShownSetting = PropertiesComponent.getInstance().getBoolean(StorageDataKey.GoogleAlertMsgShownSetting, false);
-        if (currentEngine == TranslationEngineType.Google && !GoogleAlertMsgShownSetting) {
-            new GoogleAlertDialog(settingPanel, false).show();
-        }
+        //if (currentEngine == TranslationEngineType.Google && !GoogleAlertMsgShownSetting) {
+        //    new GoogleAlertDialog(settingPanel, false).show();
+        //}
     }
 
     private void initUI(TranslationEngineType engineType) {
         if (settingPanel == null)
             return;
 
-        PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
+        PropertiesComponent pc = PropertiesComponent.getInstance();
         switch (engineType) {
+            case Baidu:{
+                line1TextField.setText(pc.getValue(StorageDataKey.BaiduClientIdStored));
+                line2TextField.setText(pc.getValue(StorageDataKey.BaiduClientSecretStored));
+            }
+            break;
             /*case Bing: {
                 line1Text.setText("Client Id:");
                 line2Text.setText("Client secret:");
@@ -323,26 +357,26 @@ public class SettingConfigurable implements Configurable, ActionListener {
                 line2TextField.setText("");
             }
             break;*/
-            case Google: {
-                line1Text.setText("API key:");
-                line2Text.setVisible(false);
-
-                line2TextField.setVisible(false);
-
-                howToLabel.setText(GOOGLE_HOW_TO);
-                howToLabel.removeMouseListener(bingHowTo);
-                howToLabel.addMouseListener(googleHowTo);
-
-                String googleAPIKey = propertiesComponent.getValue(StorageDataKey.GoogleApiKeyStored);
-
-                if (googleAPIKey != null) {
-                    PromptSupport.setPrompt(googleAPIKey, line1TextField);
-                } else {
-                    PromptSupport.setPrompt(DEFAULT_GOOGLE_API_KEY, line1TextField);
-                }
-                line1TextField.setText("");
-            }
-            break;
+            //case Google: {
+            //    line1Text.setText("API key:");
+            //    line2Text.setVisible(false);
+            //
+            //    line2TextField.setVisible(false);
+            //
+            //    howToLabel.setText(GOOGLE_HOW_TO);
+            //    howToLabel.removeMouseListener(bingHowTo);
+            //    howToLabel.addMouseListener(googleHowTo);
+            //
+            //    String googleAPIKey = propertiesComponent.getValue(StorageDataKey.GoogleApiKeyStored);
+            //
+            //    if (googleAPIKey != null) {
+            //        PromptSupport.setPrompt(googleAPIKey, line1TextField);
+            //    } else {
+            //        PromptSupport.setPrompt(DEFAULT_GOOGLE_API_KEY, line1TextField);
+            //    }
+            //    line1TextField.setText("");
+            //}
+            //break;
         }
     }
 

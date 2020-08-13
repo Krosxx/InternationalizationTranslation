@@ -10,5 +10,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="xswingx" level="project" />
+    <orderEntry type="library" name="gson-2.8.6" level="project" />
+    <orderEntry type="library" name="httpclient-4.2" level="project" />
+    <orderEntry type="library" name="httpcore-4.2.1" level="project" />
   </component>
 </module>

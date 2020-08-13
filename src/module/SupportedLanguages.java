@@ -146,7 +146,7 @@ public enum SupportedLanguages {
         switch (type) {
             /*case Bing:
                 return getBingLanguages();*/
-            case Google:
+            //case Google:
             case Baidu:
                 return getGoogleLanguages();
         }

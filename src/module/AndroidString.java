@@ -16,6 +16,12 @@
 
 package module;
 
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -23,11 +29,8 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+
+import Utils.XmlCode;
 
 /**
  * Created by Wesley Lin on 11/29/14.
@@ -39,6 +42,18 @@ public class AndroidString {
     public AndroidString(String key, String value) {
         this.key = key;
         this.value = value;
+    }
+
+    public void encodeXmlValue(int spCount) {
+        if (value != null) {
+            value = XmlCode.encode(value, spCount);
+        }
+    }
+
+    public void decodeXmlValue() {
+        if (value != null) {
+            value = XmlCode.decode(value);
+        }
     }
 
     public AndroidString(AndroidString androidString) {
@@ -160,7 +175,9 @@ public class AndroidString {
                     String key = tokens[i].substring(keyStartIndex, keyEndIndex).trim();
                     String value = tokens[i].substring(keyEndIndex + KEY_END.length(), valueEndIndex).trim();
 
-                    result.add(new AndroidString(key, value));
+                    AndroidString newS = new AndroidString(key, value);
+                    newS.decodeXmlValue();
+                    result.add(newS);
                 }
             }
             return result;
@@ -183,7 +200,7 @@ public class AndroidString {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < list.size(); i++) {
             String value = list.get(i).getValue();
-            value = value.replaceAll("\n","");
+            value = value.replaceAll("\n", "");
             stringBuilder.append(value);
             if (i != list.size() - 1) {
                 stringBuilder.append("\n");
@@ -200,4 +217,6 @@ public class AndroidString {
         }
         return result;
     }
+
+
 }

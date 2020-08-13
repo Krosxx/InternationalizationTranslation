@@ -138,8 +138,8 @@ public class ConvertToOtherLanguages extends AnAction implements MultiSelectDial
         if (file == null)
             return false;
 
-        if (!file.getName().equals("strings.xml"))
-            return false;
+        //if (!file.getName().equals("strings.xml"))
+        //    return false;
 
         if (file.getParent() == null)
             return false;

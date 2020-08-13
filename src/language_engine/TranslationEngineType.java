@@ -21,7 +21,7 @@ package language_engine;
  */
 public enum TranslationEngineType {
 //    Bing("Microsoft Translator"),
-    Google("Baidu Translation API"),
+//    Google("Google Translation API"),
     Baidu("Baidu Translation API");
     private String displayName;
 
@@ -36,8 +36,8 @@ public enum TranslationEngineType {
     public static TranslationEngineType[] getLanguageEngineArray() {
         return new TranslationEngineType[]{
 //                Bing,
-                Google
-                ,Baidu
+//                Google,
+                Baidu
         };
     }
 

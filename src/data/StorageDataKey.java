@@ -28,6 +28,8 @@ public class StorageDataKey {
     public static final String SettingLanguageEngine = "SettingLanguageEngine";
     public static final String BingClientIdStored = "BingClientIdStored";
     public static final String BingClientSecretStored = "BingClientSecretStored";
+    public static final String BaiduClientIdStored = "BaiduClientIdStored";
+    public static final String BaiduClientSecretStored = "BaiduClientSecretStored";
 
     public static final String SettingFilterRules = "SettingFilterRules";
 
