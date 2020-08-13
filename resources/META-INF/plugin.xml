@@ -1,40 +1,40 @@
 <idea-plugin>
-  <id>com.your.company.unique.plugin.id</id>
-  <name>BaiduTranslationInternationalization</name>
-  <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <id>cn.vove7.plugins.internationalizationtranslation</id>
+    <name>InternationalizationTranslation</name>
+    <version>1.0</version>
+    <vendor email="Vove@qq.com" url="https://www.github.com/Vove7">Vove7</vendor>
 
-  <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+    <description><![CDATA[
+  一键将string.xml翻译其他语言
     ]]></description>
 
-  <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
-    ]]>
-  </change-notes>
+    <change-notes><![CDATA[
+- 优化 (' & 空格)等特殊字符
+- 支持自定义 百度翻译 appid
+]]>
+    </change-notes>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="145.0"/>
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="145.0" />
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-       on how to target different products -->
-  <!-- uncomment to enable plugin in all products
-  <depends>com.intellij.modules.lang</depends>
-  -->
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
 
-  <extensions defaultExtensionNs="com.intellij">
-    <applicationConfigurable
-            instance="settings.SettingConfigurable"/>
-  </extensions>
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable instance="settings.SettingConfigurable" />
+    </extensions>
 
-  <actions>
-    <action id="AL.Convert" class="action.ConvertToOtherLanguages" text="Convert to other languages"
+    <actions>
+        <action id="AL.Convert" class="action.ConvertToOtherLanguages"
+            text="Convert to other languages"
             description="Convert this strings.xml to other languages that can be used to localize your Android app.">
 
-      <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="EditSource"/>
-    </action>
-  </actions>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="after"
+                relative-to-action="EditSource" />
+        </action>
+    </actions>
 
 </idea-plugin>

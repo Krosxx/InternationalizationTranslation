@@ -1,32 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b685c33c-cf83-4d64-8f93-639b932c2fe7" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/gson_2_8_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/httpclient_4_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/httpcore_4_2_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libs/gson-2.8.6.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libs/httpclient-4.2.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/libs/httpcore-4.2.1.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Utils/XmlCode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/module/ArrayString.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="b685c33c-cf83-4d64-8f93-639b932c2fe7" name="Default" comment="优化 (' &amp; 空格)等特殊字符; 优化翻译频率过快导致的失败; 支持自定义 百度翻译 appid">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BaiduTranslationInternationalization.iml" beforeDir="false" afterPath="$PROJECT_DIR$/BaiduTranslationInternationalization.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BaiduTranslationInternationalization.iml" beforeDir="false" afterPath="$PROJECT_DIR$/InternationalizationTranslation.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BaiduTranslationInternationalization.zip" beforeDir="false" afterPath="$PROJECT_DIR$/InternationalizationTranslation.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/action/ConvertToOtherLanguages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/action/ConvertToOtherLanguages.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data/StorageDataKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/StorageDataKey.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data/task/GetTranslationTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/task/GetTranslationTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/language_engine/TranslationEngineType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/language_engine/TranslationEngineType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/language_engine/baidu/TransApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/language_engine/baidu/TransApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module/AndroidString.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/AndroidString.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module/SupportedLanguages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/SupportedLanguages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/META-INF/plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/META-INF/plugin.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/Utils/MD5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/action/ConvertToOtherLanguages.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/com/MyComponent.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/data/Key.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/data/Log.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/data/SerializeUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/data/StorageDataKey.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/data/task/GetTranslationTask$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/data/task/GetTranslationTask$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/data/task/GetTranslationTask$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/data/task/GetTranslationTask.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/language_engine/HttpUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/language_engine/TranslationEngineType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/language_engine/baidu/TransApi.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/language_engine/bing/BingResultParser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/language_engine/bing/BingTranslationApi.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/language_engine/bing/TranslateArrayResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/language_engine/google/GoogleTranslationApi.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/module/AndroidString.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/module/FilterRule$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/module/FilterRule$FilterRuleType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/module/FilterRule.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/module/SupportedLanguages$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/module/SupportedLanguages.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/settings/SettingConfigurable$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/settings/SettingConfigurable$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/settings/SettingConfigurable$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/settings/SettingConfigurable$4$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/settings/SettingConfigurable$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/settings/SettingConfigurable$5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/settings/SettingConfigurable$6.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/settings/SettingConfigurable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/ui/AddFilterRuleDialog$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/ui/AddFilterRuleDialog$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/ui/AddFilterRuleDialog$MyBorderLayout.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/ui/AddFilterRuleDialog$OnOKClickedListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/ui/AddFilterRuleDialog.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/ui/GoogleAlertDialog$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/ui/GoogleAlertDialog$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/ui/GoogleAlertDialog.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/ui/MultiSelectDialog$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/ui/MultiSelectDialog$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/ui/MultiSelectDialog$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/ui/MultiSelectDialog$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/ui/MultiSelectDialog$MyBorderLayout.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/ui/MultiSelectDialog$OnOKClickedListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/BaiduTranslationInternationalization/ui/MultiSelectDialog.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/META-INF/plugin.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/Utils/MD5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/action/ConvertToOtherLanguages.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/com/MyComponent.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/data/Key.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/data/Log.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/data/SerializeUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/data/StorageDataKey.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/data/task/GetTranslationTask$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/data/task/GetTranslationTask$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/data/task/GetTranslationTask$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/data/task/GetTranslationTask.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/icons/globe.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/icons/globe@2x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/language_engine/HttpUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/language_engine/TranslationEngineType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/language_engine/baidu/TransApi.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/language_engine/bing/BingResultParser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/language_engine/bing/BingTranslationApi.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/language_engine/bing/TranslateArrayResponse.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/language_engine/google/GoogleTranslationApi.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/module/AndroidString.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/module/FilterRule$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/module/FilterRule$FilterRuleType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/module/FilterRule.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/module/SupportedLanguages$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/module/SupportedLanguages.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/settings/SettingConfigurable$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/settings/SettingConfigurable$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/settings/SettingConfigurable$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/settings/SettingConfigurable$4$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/settings/SettingConfigurable$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/settings/SettingConfigurable$5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/settings/SettingConfigurable$6.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/settings/SettingConfigurable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/ui/AddFilterRuleDialog$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/ui/AddFilterRuleDialog$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/ui/AddFilterRuleDialog$MyBorderLayout.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/ui/AddFilterRuleDialog$OnOKClickedListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/ui/AddFilterRuleDialog.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/ui/GoogleAlertDialog$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/ui/GoogleAlertDialog$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/ui/GoogleAlertDialog.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/ui/MultiSelectDialog$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/ui/MultiSelectDialog$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/ui/MultiSelectDialog$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/ui/MultiSelectDialog$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/ui/MultiSelectDialog$MyBorderLayout.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/ui/MultiSelectDialog$OnOKClickedListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/holleword/ui/MultiSelectDialog.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/META-INF/plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/META-INF/plugin.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/settings/SettingConfigurable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/settings/SettingConfigurable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/AddFilterRuleDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/AddFilterRuleDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/MultiSelectDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/MultiSelectDialog.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +151,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/libs" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15568863" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
@@ -99,7 +180,7 @@
     </configuration>
     <configuration name="XmlCode" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Utils.XmlCode" />
-      <module name="BaiduTranslationInternationalization" />
+      <module name="InternationalizationTranslation" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <extension name="coverage">
         <pattern>
@@ -137,6 +218,40 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="InternationalizationTranslation" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="TestNG">
       <option name="TEST_OBJECT" value="CLASS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -147,7 +262,7 @@
       </method>
     </configuration>
     <configuration name="Plugin" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
-      <module name="BaiduTranslationInternationalization" />
+      <module name="InternationalizationTranslation" />
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
       <option name="PROGRAM_PARAMETERS" />
       <predefined_log_file enabled="true" id="idea.log" />
@@ -156,7 +271,7 @@
       </method>
     </configuration>
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
-      <module name="BaiduTranslationInternationalization" />
+      <module name="InternationalizationTranslation" />
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
       <option name="PROGRAM_PARAMETERS" />
       <predefined_log_file enabled="true" id="idea.log" />
@@ -181,8 +296,18 @@
       <option name="presentableId" value="Default" />
       <updated>1512637792611</updated>
       <workItem from="1597283664961" duration="8648000" />
-      <workItem from="1597296243237" duration="3578000" />
+      <workItem from="1597296243237" duration="4068000" />
+      <workItem from="1597300936993" duration="478000" />
+      <workItem from="1597301585571" duration="373000" />
     </task>
+    <task id="LOCAL-00001" summary="优化 (' &amp; 空格)等特殊字符; 优化翻译频率过快导致的失败; 支持自定义 百度翻译 appid">
+      <created>1597300154898</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1597300154898</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TodoView">
@@ -197,63 +322,77 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="优化 (' &amp; 空格)等特殊字符; 优化翻译频率过快导致的失败; 支持自定义 百度翻译 appid" />
+    <option name="LAST_COMMIT_MESSAGE" value="优化 (' &amp; 空格)等特殊字符; 优化翻译频率过快导致的失败; 支持自定义 百度翻译 appid" />
+  </component>
   <component name="WindowStateProjectService">
-    <state x="223" y="75" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1597285011607">
+    <state x="223" y="75" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1597301740628">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state x="223" y="75" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597285011607" />
+    <state x="223" y="75" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597301740628" />
     <state x="574" y="125" key="#com.intellij.ide.util.MemberChooser" timestamp="1597289787167">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
     <state x="574" y="125" key="#com.intellij.ide.util.MemberChooser/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597289787167" />
+    <state x="449" y="155" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1597301651885">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="449" y="155" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597301651885" />
     <state x="516" y="284" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1597299752853">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
     <state x="516" y="284" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597299752853" />
-    <state x="249" y="9" key="CommitChangelistDialog2" timestamp="1597299740477">
+    <state x="249" y="9" key="CommitChangelistDialog2" timestamp="1597301945417">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state x="249" y="9" key="CommitChangelistDialog2/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597299740477" />
-    <state width="1493" height="264" key="GridCell.Tab.0.bottom" timestamp="1597299781016">
+    <state x="249" y="9" key="CommitChangelistDialog2/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597301945417" />
+    <state width="1493" height="324" key="GridCell.Tab.0.bottom" timestamp="1597300347514">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="264" key="GridCell.Tab.0.bottom/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597299781016" />
-    <state width="1493" height="264" key="GridCell.Tab.0.center" timestamp="1597299781016">
+    <state width="1493" height="324" key="GridCell.Tab.0.bottom/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597300347514" />
+    <state width="1493" height="324" key="GridCell.Tab.0.center" timestamp="1597300347514">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="264" key="GridCell.Tab.0.center/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597299781016" />
-    <state width="1493" height="264" key="GridCell.Tab.0.left" timestamp="1597299781016">
+    <state width="1493" height="324" key="GridCell.Tab.0.center/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597300347514" />
+    <state width="1493" height="324" key="GridCell.Tab.0.left" timestamp="1597300347513">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="264" key="GridCell.Tab.0.left/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597299781016" />
-    <state width="1493" height="264" key="GridCell.Tab.0.right" timestamp="1597299781016">
+    <state width="1493" height="324" key="GridCell.Tab.0.left/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597300347513" />
+    <state width="1493" height="324" key="GridCell.Tab.0.right" timestamp="1597300347514">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="264" key="GridCell.Tab.0.right/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597299781016" />
-    <state width="1493" height="264" key="GridCell.Tab.1.bottom" timestamp="1597299781017">
+    <state width="1493" height="324" key="GridCell.Tab.0.right/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597300347514" />
+    <state width="1493" height="324" key="GridCell.Tab.1.bottom" timestamp="1597300347515">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="264" key="GridCell.Tab.1.bottom/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597299781017" />
-    <state width="1493" height="264" key="GridCell.Tab.1.center" timestamp="1597299781016">
+    <state width="1493" height="324" key="GridCell.Tab.1.bottom/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597300347515" />
+    <state width="1493" height="324" key="GridCell.Tab.1.center" timestamp="1597300347514">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="264" key="GridCell.Tab.1.center/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597299781016" />
-    <state width="1493" height="264" key="GridCell.Tab.1.left" timestamp="1597299781016">
+    <state width="1493" height="324" key="GridCell.Tab.1.center/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597300347514" />
+    <state width="1493" height="324" key="GridCell.Tab.1.left" timestamp="1597300347514">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="264" key="GridCell.Tab.1.left/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597299781016" />
-    <state width="1493" height="264" key="GridCell.Tab.1.right" timestamp="1597299781016">
+    <state width="1493" height="324" key="GridCell.Tab.1.left/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597300347514" />
+    <state width="1493" height="324" key="GridCell.Tab.1.right" timestamp="1597300347515">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state width="1493" height="264" key="GridCell.Tab.1.right/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597299781016" />
+    <state width="1493" height="324" key="GridCell.Tab.1.right/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597300347515" />
     <state x="397" y="123" key="RollbackChangesDialog" timestamp="1597299829411">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
     <state x="397" y="123" key="RollbackChangesDialog/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597299829411" />
-    <state x="249" y="0" key="SettingsEditor" timestamp="1597284559923">
+    <state x="249" y="0" key="SettingsEditor" timestamp="1597301755491">
       <screen x="0" y="0" width="1536" height="834" />
     </state>
-    <state x="249" y="0" key="SettingsEditor/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597284559923" />
+    <state x="249" y="0" key="SettingsEditor/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597301755491" />
+    <state x="361" y="153" key="Vcs.Push.Dialog.v2" timestamp="1597300159326">
+      <screen x="0" y="0" width="1536" height="834" />
+    </state>
+    <state x="361" y="153" key="Vcs.Push.Dialog.v2/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597300159326" />
     <state x="181" y="355" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1597284557750">
       <screen x="0" y="0" width="1536" height="834" />
     </state>

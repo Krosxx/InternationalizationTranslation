@@ -4,7 +4,7 @@
 - 优化 (' & 空格)等特殊字符
 - 支持自定义 百度翻译 appid
 
-下载：[BaiduTranslationInternationalization.zip](BaiduTranslationInternationalization.zip)
+下载：[InternationalizationTranslation.zip](InternationalizationTranslation.zip)
 
 
 > ﻿BaiduTranslationInternationalization

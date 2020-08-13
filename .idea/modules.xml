@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BaiduTranslationInternationalization.iml" filepath="$PROJECT_DIR$/BaiduTranslationInternationalization.iml" />
+      <module fileurl="file://$PROJECT_DIR$/InternationalizationTranslation.iml" filepath="$PROJECT_DIR$/InternationalizationTranslation.iml" />
     </modules>
   </component>
 </project>
