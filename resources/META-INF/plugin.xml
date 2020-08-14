@@ -36,5 +36,6 @@
                 relative-to-action="EditSource" />
         </action>
     </actions>
+    <depends>com.intellij.modules.lang</depends>
 
 </idea-plugin>
