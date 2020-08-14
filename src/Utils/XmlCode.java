@@ -37,9 +37,6 @@ public class XmlCode {
 
     public static String encode(String s, int tailSpaceCount) {
         for (XmlCode code : CODES) {
-            if (code.raw.equals(" ")) {
-                continue;
-            }
             s = s.replaceAll(code.raw, code.decimalString);
         }
 
@@ -48,7 +45,7 @@ public class XmlCode {
 
         //结尾空格
         for (int j = 0; j < tailSpaceCount; j++) {
-            s += "&nbsp;";
+            s += "&#160;";
         }
         return s;
     }
