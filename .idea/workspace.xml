@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b685c33c-cf83-4d64-8f93-639b932c2fe7" name="Default" comment="支持 string-array; 优化特殊字符转义" />
+    <list default="true" id="b685c33c-cf83-4d64-8f93-639b932c2fe7" name="Default" comment="add depends" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,6 +38,8 @@
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="android.sdk.path" value="$PROJECT_DIR$/../../android-sdk-windows" />
@@ -175,6 +177,7 @@
       <workItem from="1597300936993" duration="478000" />
       <workItem from="1597301585571" duration="514000" />
       <workItem from="1597302504983" duration="17761000" />
+      <workItem from="1597369257062" duration="316000" />
     </task>
     <task id="LOCAL-00001" summary="优化 (' &amp; 空格)等特殊字符; 优化翻译频率过快导致的失败; 支持自定义 百度翻译 appid">
       <created>1597300154898</created>
@@ -197,7 +200,14 @@
       <option name="project" value="LOCAL" />
       <updated>1597323417604</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="add depends">
+      <created>1597369421593</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1597369421593</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView">
@@ -218,7 +228,8 @@
     <MESSAGE value="优化 (' &amp; 空格)等特殊字符; 优化翻译频率过快导致的失败; 支持自定义 百度翻译 appid" />
     <MESSAGE value="release" />
     <MESSAGE value="支持 string-array; 优化特殊字符转义" />
-    <option name="LAST_COMMIT_MESSAGE" value="支持 string-array; 优化特殊字符转义" />
+    <MESSAGE value="add depends" />
+    <option name="LAST_COMMIT_MESSAGE" value="add depends" />
   </component>
   <component name="WindowStateProjectService">
     <state x="223" y="75" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1597301740628">
@@ -237,10 +248,10 @@
       <screen x="0" y="0" width="1536" height="834" />
     </state>
     <state x="516" y="284" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597299752853" />
-    <state x="311" y="-1069" key="CommitChangelistDialog2" timestamp="1597323416492">
+    <state x="311" y="-1069" key="CommitChangelistDialog2" timestamp="1597369420722">
       <screen x="0" y="-1080" width="1920" height="1050" />
     </state>
-    <state x="311" y="-1069" key="CommitChangelistDialog2/0.0.1536.834/0.-1080.1920.1050@0.-1080.1920.1050" timestamp="1597323416492" />
+    <state x="311" y="-1069" key="CommitChangelistDialog2/0.0.1536.834/0.-1080.1920.1050@0.-1080.1920.1050" timestamp="1597369420722" />
     <state x="249" y="9" key="CommitChangelistDialog2/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597323241046" />
     <state width="531" height="466" key="DebuggerActiveHint" timestamp="1597322400404">
       <screen x="0" y="0" width="1536" height="834" />
@@ -314,10 +325,10 @@
       <screen x="0" y="0" width="1536" height="834" />
     </state>
     <state x="249" y="0" key="SettingsEditor/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597301755491" />
-    <state x="451" y="-887" key="Vcs.Push.Dialog.v2" timestamp="1597323514011">
+    <state x="451" y="-887" key="Vcs.Push.Dialog.v2" timestamp="1597369423626">
       <screen x="0" y="-1080" width="1920" height="1050" />
     </state>
-    <state x="451" y="-887" key="Vcs.Push.Dialog.v2/0.0.1536.834/0.-1080.1920.1050@0.-1080.1920.1050" timestamp="1597323514011" />
+    <state x="451" y="-887" key="Vcs.Push.Dialog.v2/0.0.1536.834/0.-1080.1920.1050@0.-1080.1920.1050" timestamp="1597369423626" />
     <state x="361" y="153" key="Vcs.Push.Dialog.v2/0.0.1536.834/0.-1080.1920.1050@0.0.1536.834" timestamp="1597302067188" />
     <state width="775" height="424" key="XDebugger.FullValuePopup" timestamp="1597306561734">
       <screen x="0" y="0" width="1536" height="834" />

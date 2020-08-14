@@ -9,7 +9,14 @@
 
 **某些格式化字符需要检查修改**
 
-#### 原文件
+#### 使用方法
+
+在 string.xml 文件右键选择 `Convert to other languages`
+
+#### 翻译效果
+
+- 原文件
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -28,8 +35,6 @@
     </string-array>
 </resources>
 ```
-
-#### 一键翻译
 
 - English
 
